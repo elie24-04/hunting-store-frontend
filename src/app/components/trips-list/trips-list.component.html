@@ -1,0 +1,35 @@
+<section class="trips-page">
+  <div class="page-fluid">
+    <div class="page-inner">
+      <div class="section-heading">
+        <p class="eyebrow">Hunting Trips</p>
+        <h2 class="section-title">Guided trips worth booking</h2>
+        <p class="section-subtitle">
+          Choose your climate, terrain, and season. Every trip is guided, insured, and built around your comfort.
+        </p>
+      </div>
+
+      <div class="trips-grid">
+        <article class="trip-card" *ngFor="let trip of trips">
+          <div class="trip-media">
+            <img [src]="trip.images[0]" [alt]="trip.title" />
+            <span class="trip-difficulty" [ngClass]="trip.difficulty.toLowerCase()">
+              {{ trip.difficulty }}
+            </span>
+          </div>
+          <div class="trip-body">
+            <h3>{{ trip.title }}</h3>
+            <p class="trip-meta">{{ trip.location }} · {{ trip.durationDays }} days</p>
+            <p class="trip-season">Season: {{ trip.season }}</p>
+            <ul class="trip-stats">
+              <li><strong>{{ trip.maxPeople }}</strong> hunters max</li>
+              <li><strong>{{ trip.availableDates.length }}</strong> dates</li>
+            </ul>
+            <div class="trip-price">${{ trip.pricePerPerson | number:'1.0-0' }} per person</div>
+            <a class="btn btn-primary w-100 mt-2" [routerLink]="['/trips', trip.id]">View details</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+<!-- Floating Button -->
+<button class="chat-fab" (click)="toggleChat()">
+  💬
+</button>
+
+<!-- Chat Window -->
+<div class="chat-box" *ngIf="opened">
+
+  <div class="chat-header">
+    <span>Hunting Assistant</span>
+    <small class="badge">AI Powered</small>
+    <button class="close-btn" (click)="toggleChat()">✕</button>
+  </div>
+
+  <div class="chat-messages">
+    <div
+      *ngFor="let msg of messages"
+      class="chat-message"
+      [class.user]="msg.from === 'user'"
+      [class.bot]="msg.from === 'bot'"
+    >
+      {{ msg.text }}
+    </div>
+
+    <div *ngIf="loading" class="chat-message bot">
+      Typing…
+    </div>
+  </div>
+
+  <form class="chat-input" (ngSubmit)="send()">
+    <input
+      type="text"
+      [(ngModel)]="input"
+      name="message"
+      placeholder="Ask about hunting gear…"
+      [disabled]="loading"
+    />
+
+    <!-- ✅ Disabled while loading -->
+    <button type="submit" [disabled]="loading">
+      Send
+    </button>
+  </form>
+
+</div>

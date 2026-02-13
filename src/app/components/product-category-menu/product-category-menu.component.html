@@ -1,0 +1,79 @@
+<div class="menu-sidebar-content js-scrollbar1">
+  <section class="category-panel">
+    <header class="category-panel__header">
+      <p class="eyebrow">Shop by</p>
+      <h3>Categories</h3>
+      <p class="helper">Choose a collection to explore.</p>
+    </header>
+
+    <div class="category-panel__body">
+      <a
+        class="category-pill"
+        routerLink="/"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="pill-icon">🏠</span>
+        <div class="pill-copy">
+          <span class="pill-label">Home</span>
+          <small>Featured & highlights</small>
+        </div>
+        <span class="pill-caret" aria-hidden="true">›</span>
+      </a>
+
+      <a
+        class="category-pill"
+        routerLink="/trips"
+        routerLinkActive="is-active"
+      >
+        <span class="pill-icon">🧭</span>
+        <div class="pill-copy">
+          <span class="pill-label">Hunting Trips</span>
+          <small>Book a guided adventure</small>
+        </div>
+        <span class="pill-caret" aria-hidden="true">›</span>
+      </a>
+
+      <a
+        class="category-pill"
+        routerLink="/products"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="pill-icon">🧢</span>
+        <div class="pill-copy">
+          <span class="pill-label">All Products</span>
+          <small>Browse everything</small>
+        </div>
+        <span class="pill-caret" aria-hidden="true">›</span>
+      </a>
+
+      <a
+        class="category-pill"
+        *ngFor="let tempCategory of productCategories"
+        [routerLink]="['/products/category', toSlug(tempCategory.categoryName)]"
+        routerLinkActive="is-active"
+      >
+        <span class="pill-icon">
+          {{ iconForCategory(tempCategory.categoryName) }}
+        </span>
+        <div class="pill-copy">
+          <span class="pill-label">{{ tempCategory.categoryName }}</span>
+          <small>Shop this line</small>
+        </div>
+        <span class="pill-caret" aria-hidden="true">›</span>
+      </a>
+    </div>
+
+    <footer class="category-panel__footer">
+      <div>
+        <p class="helper">Categories</p>
+        <strong>{{ productCategories.length || 0 }}</strong>
+      </div>
+      <a routerLink="/cart-details" class="mini-cta">
+        <span aria-hidden="true">🛒</span>
+        View cart
+      </a>
+    </footer>
+  </section>
+</div>

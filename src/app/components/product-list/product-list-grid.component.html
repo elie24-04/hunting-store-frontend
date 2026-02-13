@@ -1,0 +1,219 @@
+<section class="hero" *ngIf="showHero">
+  <div class="hero-bg" [style.backgroundImage]="'url(' + heroImageUrl + ')'"></div>
+  <div class="hero-overlay"></div>
+
+  <div class="container-fluid hero-content">
+    <div class="hero-inner">
+      <h1 class="hero-title">
+        A GREAT SELECTION<br />
+        OF HUNTING<br />
+        CLOTHING
+      </h1>
+
+      <p class="hero-subtitle">
+        From alpine dawn patrols to deep timber pursuits, gear up with premium layers built for the modern hunter.
+      </p>
+
+      <button class="btn hero-cta" type="button" (click)="goShop()">Shop Now</button>
+    </div>
+  </div>
+</section>
+
+<section class="trips-teaser" *ngIf="showTrips && featuredTrips.length">
+  <div class="section-heading">
+    <h2 class="section-title">Book a Hunting Trip</h2>
+    <p class="section-subtitle">Curated adventures, expert guides, and premium camps.</p>
+  </div>
+
+  <div class="trips-grid">
+    <article class="trip-card" *ngFor="let trip of featuredTrips">
+      <div class="trip-media">
+        <img [src]="trip.images[0]" [alt]="trip.title" />
+        <span class="trip-difficulty" [ngClass]="trip.difficulty.toLowerCase()">
+          {{ trip.difficulty }}
+        </span>
+      </div>
+      <div class="trip-body">
+        <h3>{{ trip.title }}</h3>
+        <p class="trip-meta">{{ trip.location }} · {{ trip.durationDays }} days</p>
+        <p class="trip-season">{{ trip.season }}</p>
+        <div class="trip-price">${{ trip.pricePerPerson | number:'1.0-0' }} / person</div>
+        <a class="btn btn-primary w-100 mt-2" [routerLink]="['/trips', trip.id]">
+          View details
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <div class="teaser-actions">
+    <a routerLink="/trips" class="btn btn-outline-light">Explore Trips</a>
+  </div>
+</section>
+
+<div class="section-gap" *ngIf="showShotkam">
+  <div class="page-wrap full-width">
+    <section class="shotkam-showcase">
+    <div class="shotkam-box card-soft card-soft-pad">
+      <div class="upcoming-product">
+        <div class="upcoming-card">
+          <p class="eyebrow">Touring drop</p>
+          <h3>New Shotkam Gen 5</h3>
+          <p>
+            Precision-engineered optics with multi-sensor capture, thermal-ready housing, and anti-glare shields built
+            for dawn patrols.
+          </p>
+          <div class="upcoming-meta">
+            <span class="tag">Pre-order</span>
+            <span class="date">Releases Soon</span>
+          </div>
+          <button type="button" class="primary-link" >Reserve first access</button>
+        </div>
+      </div>
+
+      <div class="shotkam-video-strip">
+        <div class="section-head">
+          <p class="eyebrow">Shotkam Gen 5</p>
+          <h3>See it in action</h3>
+        </div>
+        <div class="videos-wrapper">
+          <article
+            class="video-card"
+            *ngFor="let video of shotkamVideos"
+            (mouseenter)="playVideo(shotVideo)"
+            (mouseleave)="pauseVideo(shotVideo)"
+          >
+            <div class="video-frame">
+              <video
+                #shotVideo
+                [src]="video.src"
+                poster="/assets/images/products/guns/sniper.png"
+                loop
+                muted
+                playsinline
+              ></video>
+              <div class="video-indicators">
+                <span></span>
+                <span class="active"></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="video-copy">
+              <p>{{ video.caption }}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+        <div class="page-wrap full-width">
+        <div class="section-heading">
+          <h2 class="section-title">Products</h2>
+          <p class="section-subtitle">Browse curated gear for every pursuit.</p>
+        </div>
+
+        <ng-container *ngIf="isLoading">
+          <div class="row g-3">
+            <div
+              class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2"
+              *ngFor="let skeleton of skeletonArray"
+            >
+              <div class="product-card h-100">
+                <div class="product-media skeleton-media"></div>
+                <div class="product-body">
+                  <div class="skeleton-line w-75"></div>
+                  <div class="skeleton-line w-50"></div>
+                  <div class="skeleton-btn"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="products-section">
+          <div class="row g-4 product-grid" *ngIf="!isLoading">
+            <div
+              class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
+              *ngFor="let tempProduct of products"
+            >
+            <div class="product-card h-100">
+              <a [routerLink]="['/products', tempProduct.id]" class="product-media">
+                <img
+                  [src]="tempProduct.imageUrl | imageUrl"
+                  [alt]="tempProduct.name"
+                  loading="lazy"
+                  class="product-img"
+                  (error)="onImageError($event)"
+                />
+              </a>
+
+              <div class="product-body">
+                <a [routerLink]="['/products', tempProduct.id]" class="product-name">
+                  {{ tempProduct.name }}
+                </a>
+
+                <div class="product-price">
+                  ${{ tempProduct.unitPrice | number:'1.2-2' }}
+                </div>
+
+                <button
+                  class="btn btn-primary w-100 mt-2"
+                  type="button"
+                  [disabled]="adding[tempProduct.id]"
+                  (click)="addToCart(tempProduct)"
+                >
+                  <ng-container *ngIf="!adding[tempProduct.id]; else addingTpl">
+                    <i class="bi bi-cart-plus me-1"></i>
+                    Add to cart
+                  </ng-container>
+                  <ng-template #addingTpl>
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Adding...
+                  </ng-template>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && products?.length == 0" class="alert alert-warning col-md-12" role="alert">
+          No products found.
+        </div>
+
+        <div class="pagination-bar">
+          <ngb-pagination
+            [(page)]="thePageNumber"
+            [pageSize]="thePageSize"
+            [collectionSize]="theTotalElements"
+            [maxSize]="5"
+            [boundaryLinks]="true"
+            (pageChange)="listProducts()"
+          >
+          </ngb-pagination>
+
+          <div class="page-size-selector">
+            <label for="pageSize">Items per page</label>
+            <div class="select-wrapper">
+              <select
+                id="pageSize"
+                [ngModel]="thePageSize"
+                (ngModelChange)="updatePageSize($event)"
+              >
+                <option>2</option>
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+                <option>50</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

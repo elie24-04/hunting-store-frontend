@@ -1,0 +1,434 @@
+<div class="main-content page-m checkout-page">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+
+            <section class="checkout-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Secure Checkout</p>
+                    <h2>Complete your purchase</h2>
+                    <p class="hero-subtitle">Review your information and place your order with confidence.</p>
+                </div>
+                <div class="hero-pill">
+                    <span>Current total</span>
+                    <strong>{{ totalPrice | currency: 'USD' }}</strong>
+                    <small>Shipping is always free</small>
+                </div>
+            </section>
+
+            <div class="container-fluid py-3">
+                <div class="page-wrap">
+                <div class="row g-3">
+                    <div class="col-12 col-lg-8">
+                        <form [formGroup]="checkoutFormGroup" (ngSubmit)="onSubmit()" class="checkout-form">
+                            <div class="accordion" id="checkoutAccordion">
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header d-lg-none" id="headingCustomer">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseCustomer" aria-expanded="true"
+                                                aria-controls="collapseCustomer">
+                                            1) Customer Information
+                                        </button>
+                                    </h2>
+                                    <div id="collapseCustomer" class="accordion-collapse collapse show d-lg-block"
+                                         aria-labelledby="headingCustomer" data-bs-parent="#checkoutAccordion">
+                                        <div class="accordion-body">
+                    <!-- customer form group -->
+                    <div formGroupName="customer" class="form-area form-card">
+                        <h3>Customer</h3>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>First Name</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="firstName" type="text">
+
+                                    <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+                                        class="alert alert-danger mt-1">
+
+                                        <div
+                                            *ngIf="firstName.errors?.['required'] || firstName.errors?.['notOnlyWhitespace']">
+                                            First Name is required
+                                        </div>
+
+                                        <div *ngIf="firstName.errors?.['minlength']">
+                                            First Name must be at least 2 characters long
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Last Name</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="lastName" type="text">
+
+                                    <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+                                        class="alert alert-danger mt-1">
+
+                                        <div
+                                            *ngIf="lastName.errors?.['required'] || lastName.errors?.['notOnlyWhitespace']">
+                                            Last Name is required
+                                        </div>
+
+                                        <div *ngIf="lastName.errors?.['minlength']">
+                                            Last Name must be at least 2 characters long
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Email</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="email" type="text">
+
+                                    <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                        class="alert alert-danger mt-1">
+
+                                        <div *ngIf="email.errors?.['required']">
+                                            Email is required
+                                        </div>
+
+                                        <div *ngIf="email.errors?.['pattern']">
+                                            Email must be a valid email address format
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header d-lg-none" id="headingShipping">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseShipping" aria-expanded="false"
+                                                aria-controls="collapseShipping">
+                                            2) Shipping Address
+                                        </button>
+                                    </h2>
+                                    <div id="collapseShipping" class="accordion-collapse collapse d-lg-block"
+                                         aria-labelledby="headingShipping" data-bs-parent="#checkoutAccordion">
+                                        <div class="accordion-body">
+                    <!-- shipping Address -->
+                    <div formGroupName="shippingAddress" class="form-area form-card">
+                        <h3>Shipping Address</h3>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Country</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <select formControlName="country">
+                                        <option value="" disabled>Select a country</option>
+                                        <option *ngFor="let country of countries" [value]="country.code">
+                                            {{ country.name }}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="shippingAddressCountry.invalid && (shippingAddressCountry.dirty || shippingAddressCountry.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div *ngIf="shippingAddressCountry.errors?.['required']">
+                                            Country is required
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Street</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="street" type="text">
+
+                                    <div *ngIf="shippingAddressStreet.invalid && (shippingAddressStreet.dirty || shippingAddressStreet.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="shippingAddressStreet.errors?.['required'] || shippingAddressStreet.errors?.['notOnlyWhitespace']">
+                                            Street is required
+                                        </div>
+                                        <div *ngIf="shippingAddressStreet.errors?.['minlength']">
+                                            Street must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>City</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="city" type="text">
+
+                                    <div *ngIf="shippingAddressCity.invalid && (shippingAddressCity.dirty || shippingAddressCity.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="shippingAddressCity.errors?.['required'] || shippingAddressCity.errors?.['notOnlyWhitespace']">
+                                            City is required
+                                        </div>
+                                        <div *ngIf="shippingAddressCity.errors?.['minlength']">
+                                            City must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Zip Code</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="zipCode" type="text">
+
+                                    <div *ngIf="shippingAddressZipCode.invalid && (shippingAddressZipCode.dirty || shippingAddressZipCode.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="shippingAddressZipCode.errors?.['required'] || shippingAddressZipCode.errors?.['notOnlyWhitespace']">
+                                            Zip code is required
+                                        </div>
+                                        <div *ngIf="shippingAddressZipCode.errors?.['minlength']">
+                                            Zip code must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Add check box to copy shipping to billing -->
+                    <div class="form-area form-card same-address-card">
+                        <label class="au-checkbox">
+                            <input type="checkbox" (change)="copyShippingAddressToBillingAddress($event)">
+                            <span class="au-checkmark"></span>Billing Address same as Shipping Address
+                        </label>
+                        <p class="helper-text">Skip retyping your billing address for faster checkout.</p>
+                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header d-lg-none" id="headingPayment">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapsePayment" aria-expanded="false"
+                                                aria-controls="collapsePayment">
+                                            3) Payment Method
+                                        </button>
+                                    </h2>
+                                    <div id="collapsePayment" class="accordion-collapse collapse d-lg-block"
+                                         aria-labelledby="headingPayment" data-bs-parent="#checkoutAccordion">
+                                        <div class="accordion-body">
+                    <!-- Billing Address -->
+                    <div formGroupName="billingAddress" class="form-area form-card">
+                        <h3>Billing Address</h3>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Country</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <select formControlName="country">
+                                        <option value="" disabled>Select a country</option>
+                                        <option *ngFor="let country of countries" [value]="country.code">
+                                            {{ country.name }}
+                                        </option>
+                                    </select>
+
+                                    <div *ngIf="billingAddressCountry.invalid && (billingAddressCountry.dirty || billingAddressCountry.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div *ngIf="billingAddressCountry.errors?.['required']">
+                                            Country is required
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Street</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="street" type="text">
+
+                                    <div *ngIf="billingAddressStreet.invalid && (billingAddressStreet.dirty || billingAddressStreet.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="billingAddressStreet.errors?.['required'] || billingAddressStreet.errors?.['notOnlyWhitespace']">
+                                            Street is required
+                                        </div>
+                                        <div *ngIf="billingAddressStreet.errors?.['minlength']">
+                                            Street must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>City</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="city" type="text">
+
+                                    <div *ngIf="billingAddressCity.invalid && (billingAddressCity.dirty || billingAddressCity.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="billingAddressCity.errors?.['required'] || billingAddressCity.errors?.['notOnlyWhitespace']">
+                                            City is required
+                                        </div>
+                                        <div *ngIf="billingAddressCity.errors?.['minlength']">
+                                            City must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2"> <label>Zip Code</label></div>
+                            <div class="col-md-9">
+                                <div class="input-space">
+                                    <input formControlName="zipCode" type="text">
+
+                                    <div *ngIf="billingAddressZipCode.invalid && (billingAddressZipCode.dirty || billingAddressZipCode.touched)"
+                                        class="alert alert-danger mt-1">
+                                        <div
+                                            *ngIf="billingAddressZipCode.errors?.['required'] || billingAddressZipCode.errors?.['notOnlyWhitespace']">
+                                            Zip code is required
+                                        </div>
+
+                                        <div *ngIf="billingAddressZipCode.errors?.['minlength']">
+                                            Zip code must be at least 2 characters long
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Stripe Elements Credit Card Section -->
+                    <div formGroupName="creditCard" class="form-area">
+
+                        <h3>Credit or Debit Card</h3>
+
+                        <div id="card-element">
+                            <!-- a Stripe element will be inserted here -->
+                        </div>
+
+                        <!-- Used to display form errors -->
+                        <div id="card-errors" class="alert alert-danger mt-1"></div>
+
+                    </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header d-lg-none" id="headingReview">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseReview" aria-expanded="false"
+                                                aria-controls="collapseReview">
+                                            4) Review &amp; Place Order
+                                        </button>
+                                    </h2>
+                                    <div id="collapseReview" class="accordion-collapse collapse d-lg-block"
+                                         aria-labelledby="headingReview" data-bs-parent="#checkoutAccordion">
+                                        <div class="accordion-body">
+                                            <div class="mini-summary">
+                                                <div class="summary-line">
+                                                    <span>Items ({{ totalQuantity }})</span>
+                                                    <strong>{{ totalPrice | currency: 'USD' }}</strong>
+                                                </div>
+                                                <div class="summary-line">
+                                                    <span>Shipping</span>
+                                                    <strong class="free-tag">FREE</strong>
+                                                </div>
+                                                <hr>
+                                                <div class="summary-total">
+                                                    <span>Total Due</span>
+                                                    <span>{{ totalPrice | currency: 'USD' }}</span>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-success w-100 checkout-btn" type="button" (click)="placeOrder()">
+                                                Place Order
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="order-summary sticky-summary" aria-label="Order summary">
+                            <div class="summary-card">
+                                <h3>Order Summary</h3>
+                                <div class="summary-line">
+                                    <span>Items ({{ totalQuantity }})</span>
+                                    <strong>{{ totalPrice | currency: 'USD' }}</strong>
+                                </div>
+                                <div class="summary-line">
+                                    <span>Shipping</span>
+                                    <strong class="free-tag">FREE</strong>
+                                </div>
+                                <hr>
+                                <div class="summary-total">
+                                    <span>Total Due</span>
+                                    <span>{{ totalPrice | currency: 'USD' }}</span>
+                                </div>
+                                <ul class="summary-list">
+                                    <li>Secure payment processing</li>
+                                    <li>Free shipping & returns</li>
+                                    <li>Need help? support@luv2shop.com</li>
+                                </ul>
+                                <button class="btn btn-success w-100 checkout-btn mt-2" type="button" (click)="placeOrder()">
+                                    Place Order
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="order-modal" *ngIf="showOrderSuccess" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle">
+    <div class="order-modal-card">
+        <div class="order-modal-icon" aria-hidden="true">✓</div>
+        <div class="order-modal-body">
+            <h3 id="orderSuccessTitle">Order confirmed</h3>
+            <p>Your order has been received.</p>
+            <p class="order-modal-tracking">Tracking: <span>{{ orderTrackingNumber }}</span></p>
+        </div>
+        <button class="btn btn-success order-modal-btn" type="button" (click)="closeOrderSuccess()">
+            Continue shopping
+        </button>
+    </div>
+</div>

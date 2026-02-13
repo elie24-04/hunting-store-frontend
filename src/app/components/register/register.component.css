@@ -1,0 +1,159 @@
+:host {
+  display: block;
+}
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  background: url('/assets/images/bg-hunting-forest.jpg') center/cover no-repeat;
+  font-family: 'Rajdhani', sans-serif;
+  position: relative;
+  color: #e6e3d3;
+}
+
+/* Overlay for text visibility */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+/* Auth card (glass style) */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  background: rgba(15, 18, 13, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 2.75rem;
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+.auth-card h2 {
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: #f8f8f8;
+}
+
+.subtitle {
+  margin-bottom: 1.5rem;
+  color: rgba(230, 227, 211, 0.7);
+  font-size: 0.95rem;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #fefefe;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.5);
+  color: #fefefe;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #c2b280;
+  box-shadow: 0 0 0 3px rgba(194, 178, 128, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #fb7185;
+}
+
+.invalid-feedback {
+  color: #fb7185;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+
+.invalid-feedback.inline {
+  margin-top: 0.4rem;
+}
+
+.password-hints {
+  padding-left: 1rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+}
+
+.password-hints li {
+  list-style-type: disc;
+}
+
+.policy {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+  color: #e2e8f0;
+}
+
+.policy input {
+  width: 18px;
+  height: 18px;
+}
+
+.policy.is-invalid {
+  color: #fb7185;
+}
+
+/* Button matching hunting theme */
+.btn-primary {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: linear-gradient(130deg, #c2b280, #7c6e45);
+  color: #1e1c16;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 35px rgba(124, 110, 69, 0.35);
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.alt-link {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.alt-link a {
+  color: #c2b280;
+  font-weight: 600;
+}

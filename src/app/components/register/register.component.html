@@ -1,0 +1,109 @@
+<section class="auth-wrapper">
+  <div class="bg-overlay"></div>
+
+  <div class="auth-card">
+    <h2>Create your account</h2>
+    <p class="subtitle">Securely store your info to speed through checkout later.</p>
+
+    <div class="alert alert-danger" role="alert" *ngIf="serverError">
+      {{ serverError }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-group">
+        <label for="fullName">Full name</label>
+        <input
+          id="fullName"
+          type="text"
+          class="form-control"
+          formControlName="fullName"
+          autocomplete="name"
+          placeholder="Elie Nassif"
+          [class.is-invalid]="fullName?.touched && fullName?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="fullName?.touched && fullName?.errors">
+          <span *ngIf="fullName?.errors?.['required']">Full name is required.</span>
+          <span *ngIf="fullName?.errors?.['minlength']">Enter at least 2 characters.</span>
+          <span *ngIf="fullName?.errors?.['maxlength']">Please keep it under 60 characters.</span>
+          <span *ngIf="fullName?.errors?.['notOnlyWhitespace']">Only whitespace is not allowed.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regEmail">Email address</label>
+        <input
+          id="regEmail"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          [class.is-invalid]="email?.touched && email?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="email?.touched && email?.errors">
+          <span *ngIf="email?.errors?.['required']">Email is required.</span>
+          <span *ngIf="email?.errors?.['email']">Provide a valid email address.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="regPassword">Password</label>
+        <input
+          id="regPassword"
+          type="password"
+          class="form-control"
+          formControlName="password"
+          autocomplete="new-password"
+          placeholder="Create a strong password"
+          [class.is-invalid]="password?.touched && password?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="password?.touched && password?.errors">
+          <span *ngIf="password?.errors?.['required']">Password is required.</span>
+          <span *ngIf="password?.errors?.['pattern']">
+            At least 10 characters with upper, lower, number, and special symbol.
+          </span>
+        </div>
+        <ul class="password-hints">
+          <li>Minimum 10 characters</li>
+          <li>One uppercase, one lowercase, and one number</li>
+          <li>Include a special character (e.g. !@#$)</li>
+        </ul>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          class="form-control"
+          formControlName="confirmPassword"
+          autocomplete="new-password"
+          placeholder="Re-enter your password"
+          [class.is-invalid]="confirmPassword?.touched && confirmPassword?.invalid"
+        />
+        <div class="invalid-feedback" *ngIf="confirmPassword?.touched && confirmPassword?.errors">
+          <span *ngIf="confirmPassword?.errors?.['required']">Please confirm your password.</span>
+          <span *ngIf="confirmPassword?.errors?.['mismatch']">Passwords need to match.</span>
+        </div>
+      </div>
+
+      <label class="policy" [class.is-invalid]="acceptPolicy?.touched && acceptPolicy?.invalid">
+        <input type="checkbox" formControlName="acceptPolicy" />
+        I agree to the privacy policy and terms of service.
+      </label>
+      <div class="invalid-feedback inline" *ngIf="acceptPolicy?.touched && acceptPolicy?.errors">
+        You must accept the policy before continuing.
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Create account</span>
+        <span *ngIf="isSubmitting">Creating account…</span>
+      </button>
+    </form>
+
+    <p class="alt-link">
+      Already have an account?
+      <a routerLink="/login">Sign in instead</a>
+    </p>
+  </div>
+</section>

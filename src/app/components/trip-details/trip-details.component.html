@@ -1,0 +1,158 @@
+<section class="trip-details-page" *ngIf="trip; else loading">
+  <div class="page-fluid">
+    <div class="page-inner">
+      <div class="trip-hero" [style.backgroundImage]="'url(' + trip.images[0] + ')'">
+        <div class="trip-hero__overlay">
+          <div class="hero-copy">
+            <p class="eyebrow">{{ trip.location }}</p>
+            <h1>{{ trip.title }}</h1>
+            <p>{{ trip.description }}</p>
+          </div>
+          <div class="hero-meta">
+            <div>
+              <strong>{{ trip.durationDays }} days</strong>
+              <span>Duration</span>
+            </div>
+            <div>
+              <strong>{{ trip.season }}</strong>
+              <span>Season</span>
+            </div>
+            <div>
+              <strong>${{ trip.pricePerPerson | number:'1.0-0' }}</strong>
+              <span>per person</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trip-layout">
+        <div class="trip-info">
+          <div class="section-heading">
+            <h2 class="section-title">Trip information</h2>
+          </div>
+          <p>{{ trip.description }}</p>
+
+          <div class="trip-lists">
+            <div>
+              <h3>Included</h3>
+              <ul>
+                <li *ngFor="let item of trip.included">{{ item }}</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Not included</h3>
+              <ul>
+                <li *ngFor="let item of trip.notIncluded">{{ item }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="trip-meta-grid">
+            <div>
+              <h4>Requirements</h4>
+              <ul>
+                <li *ngFor="let req of trip.requirements">{{ req }}</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Safety rules</h4>
+              <p>Always follow guides, keep firearms on safe, and obey briefing instructions.</p>
+            </div>
+            <div>
+              <h4>Meeting point</h4>
+              <p>{{ trip.meetingPoint }}</p>
+            </div>
+            <div>
+              <h4>Available dates</h4>
+              <div class="dates">
+                <span *ngFor="let date of trip.availableDates">{{ date }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="trip-reviews">
+            <h3>Reviews</h3>
+            <p>“Coming soon — read what Guides say about our trips.”</p>
+          </div>
+        </div>
+
+        <aside class="booking-card">
+          <h3>Book this trip</h3>
+          <p class="booking-subtitle">Request your spot and our captain will confirm with logistics.</p>
+          <form [formGroup]="bookingForm" (ngSubmit)="submitBooking()">
+            <label>
+              Full name
+              <input formControlName="fullName" type="text" />
+            </label>
+            <label>
+              Email
+              <input formControlName="email" type="email" />
+            </label>
+            <label>
+              Phone
+              <input formControlName="phone" type="tel" />
+            </label>
+            <label>
+              Number of people
+              <input formControlName="people" type="number" min="1" />
+            </label>
+            <label>
+              Preferred date
+              <select formControlName="preferredDate">
+                <option *ngFor="let date of trip.availableDates" [value]="date">{{ date }}</option>
+              </select>
+            </label>
+            <label>
+              Preferred time (optional)
+              <input formControlName="preferredTime" type="time"/>
+            </label>
+            <label>
+              Experience level
+              <select formControlName="experience">
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+              </select>
+            </label>
+            <label>
+              Notes
+              <textarea formControlName="notes" rows="3"></textarea>
+            </label>
+            <label class="terms">
+              <input formControlName="agreed" type="checkbox" />
+              I agree to safety rules and cancellation policy
+            </label>
+            <button class="btn btn-success w-100 checkout-btn" type="submit">Request Booking</button>
+          </form>
+
+          <div class="booking-policy">
+            <h4>Cancellation policy</h4>
+            <p>Cancel 14 days prior for a full refund minus fees. 50% within 7 days.</p>
+            <h4>Safety disclaimer</h4>
+            <p>All guests must follow guide instructions, inspect gear before departure, and wear safety equipment.</p>
+            <h4>Contact</h4>
+            <p>hello@backcountry.com · +961 81 123 345</p>
+          </div>
+
+          <div class="booking-confirm" *ngIf="successBooking">
+            <h4>Booking request received</h4>
+            <p>Your reference {{ successBooking.reference }} is confirmed and pending guide approval.</p>
+            <ul>
+              <li><strong>Trip:</strong> {{ trip.title }}</li>
+              <li><strong>Date:</strong> {{ successBooking.preferredDate }}</li>
+              <li><strong>People:</strong> {{ successBooking.people }}</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #loading>
+  <div class="page-fluid">
+    <div class="page-inner">
+      <p>Loading trip info…</p>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,123 @@
+<div class="main-content cart-page">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+            <div class="page-wrap">
+
+            <section class="cart-hero">
+                <div>
+                    <p class="eyebrow">Your cart</p>
+                    <h2 class="section-title">Review and adjust your items</h2>
+                    <p class="hero-subtitle section-subtitle">Easily update quantities or remove items before heading to checkout.</p>
+                </div>
+                <div class="hero-pill">
+                    <span>Total items</span>
+                    <strong>{{ totalQuantity }}</strong>
+                    <small>{{ totalPrice | currency: 'USD' }}</small>
+                </div>
+            </section>
+
+            <ng-container *ngIf="cartItems.length > 0; else emptyCart">
+                <div class="container-fluid py-3">
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-8">
+                            <div class="cart-items">
+                        <article class="cart-item card-soft card-soft-pad" *ngFor="let tempCartItem of cartItems">
+                                    <div class="cart-item-grid">
+                                        <div class="cart-item-image">
+                                            <img [src]="tempCartItem.imageUrl | imageUrl" [alt]="tempCartItem.name">
+                                        </div>
+                                        <div class="cart-item-info">
+                                            <div class="cart-item-title">
+                                                <h4>{{ tempCartItem.name }}</h4>
+                                            </div>
+                                            <div class="cart-item-meta">
+                                                <span class="price">{{ tempCartItem.unitPrice | currency: 'USD' }}</span>
+                                                <span class="stock-chip">In stock</span>
+                                            </div>
+                                            <div class="item-subtotal">
+                                                <span>Subtotal</span>
+                                                <strong>{{ tempCartItem.quantity * tempCartItem.unitPrice | currency: 'USD' }}</strong>
+                                            </div>
+                                        </div>
+                                        <div class="cart-item-actions">
+                                            <div class="qty-control" aria-label="Quantity controls">
+                                                <button
+                                                    class="qty-btn"
+                                                    type="button"
+                                                    (click)="decrementQuantity(tempCartItem)"
+                                                    [disabled]="tempCartItem.quantity <= 1"
+                                                    aria-label="Decrease quantity"
+                                                >
+                                                    <i class="bi bi-dash-lg"></i>
+                                                </button>
+                                                <input
+                                                    class="qty-input"
+                                                    type="number"
+                                                    [value]="tempCartItem.quantity"
+                                                    min="1"
+                                                    (change)="onQtyInputChange(tempCartItem, $event)"
+                                                />
+                                                <button
+                                                    class="qty-btn"
+                                                    type="button"
+                                                    (click)="incrementQuantity(tempCartItem)"
+                                                    aria-label="Increase quantity"
+                                                >
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </button>
+                                            </div>
+                                            <button
+                                                class="btn btn-outline-danger remove-btn"
+                                                type="button"
+                                                (click)="remove(tempCartItem)"
+                                            >
+                                                <i class="bi bi-trash3 me-1"></i>
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-4">
+                            <div class="order-summary sticky-summary card-soft card-soft-pad" aria-label="Order summary">
+                                <div class="summary-card">
+                                    <h3>Order Summary</h3>
+                                    <div class="summary-line">
+                                        <span>Items</span>
+                                        <strong>{{ totalQuantity }}</strong>
+                                    </div>
+                                    <div class="summary-line">
+                                        <span>Shipping</span>
+                                        <strong class="free-tag">FREE</strong>
+                                    </div>
+                                    <hr>
+                                    <div class="summary-total">
+                                        <span>Total Due</span>
+                                        <span>{{ totalPrice | currency: 'USD' }}</span>
+                                    </div>
+                                    <p class="secure-note">Secure checkout with encrypted payment processing.</p>
+                                    <button class="btn btn-success w-100 checkout-btn" (click)="checkout()">
+                                        Proceed to Checkout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #emptyCart>
+                <div class="empty-state">
+                    <h3>Your shopping cart is empty.</h3>
+                    <p>Browse the catalog and add items you love.</p>
+                    <a routerLink="/products" class="primary-btn">Continue shopping</a>
+                </div>
+            </ng-template>
+
+            </div>
+        </div>
+    </div>
+</div>

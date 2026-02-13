@@ -1,0 +1,130 @@
+<section class="message-page-section section-gap">
+  <div class="container-xl">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-8">
+        <div class="card message-card">
+          <div class="card-body">
+            <p class="eyebrow text-uppercase">Customer Support</p>
+            <h1 class="section-title mb-2">Send us a message</h1>
+            <p class="section-subtitle mb-4">
+              Whether you are curious about a product, planning a guided trip, or need help with an order,
+              our outfitters are standing by.
+            </p>
+            <form [formGroup]="messageForm" (ngSubmit)="onSubmit()" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="name">Name<span class="text-danger">*</span></label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="name"
+                    [class.is-invalid]="nameControl.invalid && (nameControl.dirty || nameControl.touched)"
+                    [disabled]="isSubmitting"
+                  />
+                  <div class="invalid-feedback" *ngIf="nameControl.hasError('required') && (nameControl.dirty || nameControl.touched)">
+                    Please tell us your name.
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="email">Email<span class="text-danger">*</span></label>
+                    <input
+                    id="email"
+                    type="email"
+                    class="form-control form-control-lg"
+                    formControlName="email"
+                    [class.is-invalid]="emailControl.invalid && (emailControl.dirty || emailControl.touched)"
+                    [disabled]="isSubmitting"
+                  />
+                  <div class="invalid-feedback" *ngIf="emailControl.hasError('required') && (emailControl.dirty || emailControl.touched)">
+                    Email is required.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="emailControl.hasError('email') && (emailControl.dirty || emailControl.touched)">
+                    Please enter a valid email address.
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="phone">Phone (optional)</label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    class="form-control form-control-lg"
+                    formControlName="phone"
+                    [disabled]="isSubmitting"
+                  />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label" for="type">Message Type<span class="text-danger">*</span></label>
+                  <select
+                    id="type"
+                    class="form-select form-select-lg"
+                    formControlName="type"
+                    [class.is-invalid]="typeControl.invalid && (typeControl.dirty || typeControl.touched)"
+                    [disabled]="isSubmitting"
+                  >
+                    <option *ngFor="let option of messageTypeOptions" [value]="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                  <div class="invalid-feedback" *ngIf="typeControl.hasError('required') && (typeControl.dirty || typeControl.touched)">
+                    Select the topic that best fits your message.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="subject">Subject<span class="text-danger">*</span></label>
+                  <input
+                    id="subject"
+                    type="text"
+                    class="form-control form-control-lg"
+                    formControlName="subject"
+                    [class.is-invalid]="subjectControl.invalid && (subjectControl.dirty || subjectControl.touched)"
+                    [disabled]="isSubmitting"
+                  />
+                  <div class="invalid-feedback" *ngIf="subjectControl.hasError('required') && (subjectControl.dirty || subjectControl.touched)">
+                    Tell us what you want to talk about.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label" for="message">Message<span class="text-danger">*</span></label>
+                  <textarea
+                    id="message"
+                    rows="5"
+                    class="form-control form-control-lg"
+                    formControlName="message"
+                    [class.is-invalid]="messageControl.invalid && (messageControl.dirty || messageControl.touched)"
+                    [disabled]="isSubmitting"
+                  ></textarea>
+                  <div class="invalid-feedback" *ngIf="messageControl.hasError('required') && (messageControl.dirty || messageControl.touched)">
+                    Please enter a message so we know how to help.
+                  </div>
+                  <div class="invalid-feedback" *ngIf="messageControl.hasError('minlength') && (messageControl.dirty || messageControl.touched)">
+                    Message must be at least 10 characters.
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-lg w-100"
+                    [disabled]="isSubmitting"
+                  >
+                    <span *ngIf="!isSubmitting">Send Message</span>
+                    <span *ngIf="isSubmitting" class="d-flex align-items-center justify-content-center gap-2">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Sending...
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

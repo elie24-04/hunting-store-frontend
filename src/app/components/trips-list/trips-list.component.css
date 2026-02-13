@@ -1,0 +1,125 @@
+.trips-page {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.trips-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      180deg,
+      rgba(12, 14, 11, 0.9) 0%,
+      rgba(12, 14, 11, 0.25) 45%,
+      rgba(12, 14, 11, 0.9) 100%
+    ),
+    url('/assets/images/trips/trip-1.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.trips-page > .page-fluid,
+.trips-page .page-inner,
+.trips-page .trips-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.trips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.trip-card {
+  border-radius: 24px;
+  background: rgba(22, 25, 20, 0.9);
+  border: 1px solid #2e352f;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  backdrop-filter: blur(12px);
+}
+
+.trip-media {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  background: #0d100f;
+}
+
+.trip-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.trip-difficulty {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: #7c6e45;
+}
+
+.trip-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #e6e3d3;
+}
+
+.trip-body h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.trip-meta,
+.trip-season {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: var(--text-sm);
+}
+
+.trip-stats {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+  margin: 0.3rem 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--text-sm);
+}
+
+.trip-price {
+  font-size: var(--text-lg);
+  font-weight: 900;
+  color: #c2b280;
+  margin-top: 0.5rem;
+}
+
+@media (hover: hover) {
+  .trip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65);
+  }
+}

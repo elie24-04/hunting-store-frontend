@@ -1,0 +1,253 @@
+:host {
+  display: block;
+}
+
+/* =========================
+   LAYOUT & BACKGROUND
+========================= */
+.auth-wrapper {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 3rem;
+  padding: 4rem clamp(1.25rem, 4vw, 5rem);
+  background: url('/assets/images/bg-hunting-forest.jpg') center / cover no-repeat;
+  color: #e6e3d3;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  overflow: hidden;
+}
+
+/* Dark overlay for contrast */
+.bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 0;
+}
+
+/* =========================
+   HERO PANEL
+========================= */
+.hero-panel {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+  align-self: center;
+}
+
+.hero-panel h1 {
+  font-size: clamp(2.2rem, 3vw, 3.2rem);
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.hero-description {
+  margin-bottom: 1.25rem;
+  color: rgba(230, 227, 211, 0.9);
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.features li {
+  position: relative;
+  padding-left: 1.8rem;
+  color: rgba(230, 227, 211, 0.85);
+}
+
+.features li::before {
+  content: '🦌';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* =========================
+   BRAND CREST
+========================= */
+.crest {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.crest-icon {
+  font-size: 2.2rem;
+  color: #d4af37;
+  animation: slowSpin 18s linear infinite;
+}
+
+.crest-label {
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #d4af37;
+}
+
+.crest-sub {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* =========================
+   AUTH CARD (GLASS STYLE)
+========================= */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  max-width: 460px;
+  background: rgba(12, 15, 10, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 2.75rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+}
+
+.auth-card header {
+  margin-bottom: 1.75rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.auth-card h2 {
+  margin: 0.75rem 0 0.4rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: rgba(230, 227, 211, 0.7);
+}
+
+/* =========================
+   FORM
+========================= */
+.form-group {
+  margin-bottom: 1.35rem;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #c2b280;
+  box-shadow: 0 0 0 3px rgba(194, 178, 128, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #fb7185;
+}
+
+.invalid-feedback {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: #fb7185;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.95rem;
+  border: none;
+  background: linear-gradient(135deg, #c2b280, #7c6e45);
+  color: #1e1c16;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(124, 110, 69, 0.45);
+}
+
+.btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   LINKS
+========================= */
+.alt-link {
+  margin-top: 1.75rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.alt-link a {
+  color: #c2b280;
+  font-weight: 600;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes slowSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 900px) {
+  .auth-wrapper {
+    grid-template-columns: 1fr;
+    padding: 3rem 1.5rem;
+  }
+
+  .auth-card {
+    order: 1;
+  }
+
+  .hero-panel {
+    order: 2;
+  }
+}
