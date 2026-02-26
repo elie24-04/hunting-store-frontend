@@ -22,7 +22,6 @@
 <section class="trips-teaser" *ngIf="showTrips && featuredTrips.length">
   <div class="section-heading">
     <h2 class="section-title">Book a Hunting Trip</h2>
-    <p class="section-subtitle">Curated adventures, expert guides, and premium camps.</p>
   </div>
 
   <div class="trips-grid">
@@ -63,10 +62,9 @@
             for dawn patrols.
           </p>
           <div class="upcoming-meta">
-            <span class="tag">Pre-order</span>
+            <span class="tag">Contact us for Pre-order</span>
             <span class="date">Releases Soon</span>
           </div>
-          <button type="button" class="primary-link" >Reserve first access</button>
         </div>
       </div>
 
@@ -86,7 +84,7 @@
               <video
                 #shotVideo
                 [src]="video.src"
-                poster="/assets/images/products/guns/sniper.png"
+                poster=""
                 loop
                 muted
                 playsinline
@@ -114,7 +112,7 @@
         <div class="page-wrap full-width">
         <div class="section-heading">
           <h2 class="section-title">Products</h2>
-          <p class="section-subtitle">Browse curated gear for every pursuit.</p>
+          <p class="section-subtitle"></p>
         </div>
 
         <ng-container *ngIf="isLoading">

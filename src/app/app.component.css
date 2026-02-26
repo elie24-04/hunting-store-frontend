@@ -397,7 +397,7 @@
 }
 
 .link-block h4,
-.newsletter-block h4 {
+.contact-card h4 {
   margin-bottom: 0.85rem;
   color: #f8fafc;
   font-size: 0.95rem;
@@ -447,53 +447,49 @@
   color: #c2b280;
 }
 
-.newsletter-form {
+.contact-card {
   display: flex;
-  gap: 0.5rem;
-  align-items: stretch;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.65rem;
 }
 
-.newsletter-block input {
-  flex: 1;
-  min-width: 0;
-  padding: 0.65rem 0.9rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.05);
-  color: #e6e3d3;
-  min-height: 44px;
+.contact-card p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  max-width: 260px;
 }
 
-.newsletter-block input:focus {
-  outline: none;
-  border-color: #c2b280;
-  box-shadow: 0 0 0 3px rgba(194, 178, 128, 0.2);
-}
-
-.newsletter-block button {
-  border: none;
+.whatsapp-link {
+  text-decoration: none;
   background: #7c6e45;
   color: #fff;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 1.1rem;
   border-radius: 8px;
   font-weight: 700;
   min-height: 44px;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
 }
 
-.newsletter-block button:hover {
+.whatsapp-link:hover,
+.whatsapp-link:focus-visible {
   background: #8c7852;
   transform: translateY(-1px);
+  color: #fff;
+  outline: none;
 }
 
-.newsletter-helper {
+.contact-helper {
   display: block;
-  margin-top: 0.65rem;
   color: rgba(255, 255, 255, 0.6);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 .footer-meta {
@@ -653,13 +649,9 @@
     justify-content: center;
   }
 
-  .newsletter-form {
-    flex-direction: column;
-  }
-
-  .newsletter-block input,
-  .newsletter-block button {
+  .whatsapp-link {
     width: 100%;
+    max-width: 260px;
   }
 
   .footer-meta {

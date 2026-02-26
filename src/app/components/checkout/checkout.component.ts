@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EcomFormServiceService } from '../../services/ecom-form-service.service';
 import { ECommValidator } from '../../validators/e-comm-validator';
@@ -17,7 +17,7 @@ import { COUNTRIES, Country } from 'src/app/data/countries';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   checkoutFormGroup!: FormGroup;
 
@@ -32,10 +32,14 @@ export class CheckoutComponent implements OnInit {
 
   //initialize stripe
 
-  stripe = Stripe(environment.stripePublishableKey);
+  stripe: any = null;
   paymentInfo: PaymentInfo = new PaymentInfo();
   cardElement : any;
   displayError : any= "";
+  private isCardMounted = false;
+  private paymentPanelShownHandler = () => this.mountCardElement(true);
+  private mountRetryTimer: ReturnType<typeof setTimeout> | null = null;
+  private mountAttempts = 0;
   storage: Storage = sessionStorage;
 
   isDisabled: boolean = false;
@@ -49,10 +53,6 @@ export class CheckoutComponent implements OnInit {
     private router: Router) { }
 
    ngOnInit(): void {
-
-    // setup Stripe payment form
-    this.setupStripePaymentForm();
-    
     this.reviewCartDetails();
 
     // read the user's email address from browser storage
@@ -107,31 +107,124 @@ export class CheckoutComponent implements OnInit {
 
 
   }
+  ngAfterViewInit(): void {
+    this.setupStripePaymentForm();
+    this.mountCardElement();
+    this.scheduleMountRetries();
+
+    const paymentPanel = document.getElementById('collapsePayment');
+    paymentPanel?.addEventListener('shown.bs.collapse', this.paymentPanelShownHandler);
+  }
+
+  ngOnDestroy(): void {
+    const paymentPanel = document.getElementById('collapsePayment');
+    paymentPanel?.removeEventListener('shown.bs.collapse', this.paymentPanelShownHandler);
+
+    if (this.cardElement && this.isCardMounted) {
+      this.cardElement.unmount();
+      this.isCardMounted = false;
+    }
+
+    if (this.mountRetryTimer) {
+      clearTimeout(this.mountRetryTimer);
+      this.mountRetryTimer = null;
+    }
+  }
+
   setupStripePaymentForm() {
+    if (!this.initStripe()) {
+      return;
+    }
 
     // get a handle to stripe elements
     var elements = this.stripe.elements();
 
-    // Create a card element ... and hide the zip-code field
-    this.cardElement = elements.create('card', { hidePostalCode: true });
+    const isNewCardElement = !this.cardElement;
+    if (isNewCardElement) {
+      // Create a card element ... and hide the zip-code field
+      this.cardElement = elements.create('card', { hidePostalCode: true });
+    }
 
-    // Add an instance of card UI component into the 'card-element' div
-    this.cardElement.mount('#card-element');
+    if (isNewCardElement) {
+      // Add event binding for the 'change' event on the card element
+      this.cardElement.on('change', (event: any) => {
 
-    // Add event binding for the 'change' event on the card element
-    this.cardElement.on('change', (event: any) => {
+        // get a handle to card-errors element
+        this.displayError = document.getElementById('card-errors');
 
-      // get a handle to card-errors element
+        if (event.complete) {
+          this.displayError.textContent = "";
+        } else if (event.error) {
+          // show validation error to customer
+          this.displayError.textContent = event.error.message;
+        }
+
+      });
+    }
+  }
+
+  private initStripe(): boolean {
+    if (this.stripe) {
+      return true;
+    }
+
+    const stripeFactory = (window as any).Stripe;
+    if (!stripeFactory) {
       this.displayError = document.getElementById('card-errors');
-
-      if (event.complete) {
-        this.displayError.textContent = "";
-      } else if (event.error) {
-        // show validation error to customer
-        this.displayError.textContent = event.error.message;
+      if (this.displayError) {
+        this.displayError.textContent = 'Stripe script is still loading. Please wait a second.';
       }
+      return false;
+    }
 
-    });
+    this.stripe = stripeFactory(environment.stripePublishableKey);
+    return true;
+  }
+
+  private mountCardElement(forceRemount: boolean = false): void {
+    if (!this.cardElement) {
+      return;
+    }
+
+    const host = document.getElementById('card-element');
+    if (!host) {
+      return;
+    }
+
+    if (forceRemount && this.isCardMounted) {
+      this.cardElement.unmount();
+      this.isCardMounted = false;
+    }
+
+    if (!this.isCardMounted) {
+      try {
+        this.cardElement.mount('#card-element');
+        this.isCardMounted = true;
+      } catch {
+        this.isCardMounted = false;
+      }
+    }
+  }
+
+  private scheduleMountRetries(): void {
+    if (this.isCardMounted || this.mountAttempts >= 20) {
+      if (!this.isCardMounted) {
+        this.displayError = document.getElementById('card-errors');
+        if (this.displayError) {
+          this.displayError.textContent = 'Unable to load card input. Please refresh and disable ad-block for Stripe.';
+        }
+      }
+      return;
+    }
+
+    this.mountAttempts++;
+    this.mountRetryTimer = setTimeout(() => {
+      if (!this.cardElement) {
+        this.setupStripePaymentForm();
+      }
+      this.mountCardElement(true);
+      this.scheduleMountRetries();
+    }, 250);
   }
    reviewCartDetails() {
 

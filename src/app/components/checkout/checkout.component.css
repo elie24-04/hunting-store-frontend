@@ -123,6 +123,13 @@
   margin-bottom: 1.25rem;
 }
 
+.form-card .row > [class*="col-"] {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .form-card .row:last-child {
   margin-bottom: 0;
 }
@@ -139,13 +146,19 @@
 .form-card .input-space input,
 .form-card .input-space select {
   width: 100%;
+  min-height: 46px;
   border: 1.5px solid #cfc6a4;
   border-radius: 14px;
   padding: 0.75rem 1rem;
   background: #fffdf5;
   color: #1a1a1a;
   font-size: 0.95rem;
+  line-height: 1.2;
   transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-card .input-space select {
+  padding-right: 2.25rem;
 }
 
 .form-card .input-space input:focus,

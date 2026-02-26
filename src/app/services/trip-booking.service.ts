@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+
+export type TripBookingStatus = 'NEW' | 'CONTACTED' | 'CONFIRMED' | 'CANCELLED';
 
 export interface TripBookingRequest {
-  reference: string;
   tripId: string;
+  tripTitle: string;
+  tripLocation: string;
   fullName: string;
   email: string;
   phone: string;
@@ -13,37 +19,65 @@ export interface TripBookingRequest {
   experience: 'Beginner' | 'Intermediate' | 'Advanced';
   notes?: string;
   agreed: boolean;
+  status: TripBookingStatus;
+}
+
+export interface TripBookingResponse extends TripBookingRequest {
+  id?: string | number;
+  reference?: string;
+  referenceCode?: string;
+  bookingId?: string;
+  message?: string;
   submittedAt: string;
+}
+
+interface BackendTripBookingRequest {
+  customerName: string;
+  email: string;
+  phone: string;
+  travelers: number;
+  departureDate: string;
+  experienceLevel: string;
+  notes?: string;
+}
+
+interface BackendTripBookingResponse {
+  bookingId: string;
+  referenceCode: string;
+  status: string;
+  message: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripBookingService {
-  private cacheKey = 'tripBookings';
-  private bookings: TripBookingRequest[] = [];
+  constructor(private readonly http: HttpClient) {}
 
-  constructor() {
-    const saved = localStorage.getItem(this.cacheKey);
-    if (saved) {
-      try {
-        this.bookings = JSON.parse(saved);
-      } catch {
-        this.bookings = [];
-      }
-    }
-  }
-
-  requestBooking(payload: Omit<TripBookingRequest, 'reference' | 'submittedAt'>): Observable<TripBookingRequest> {
-    const timestamp = Date.now();
-    const reference = `TRIP-${new Date().toISOString().slice(0,10).replace(/-/g, '')}-${Math.floor(Math.random()*9000)+1000}`;
-    const booking: TripBookingRequest = {
-      ...payload,
-      reference,
-      submittedAt: new Date(timestamp).toISOString(),
+  requestBooking(payload: TripBookingRequest): Observable<TripBookingResponse> {
+    const requestBody: BackendTripBookingRequest = {
+      customerName: payload.fullName,
+      email: payload.email,
+      phone: payload.phone,
+      travelers: payload.people,
+      departureDate: payload.preferredDate,
+      experienceLevel: payload.experience,
+      notes: payload.notes
     };
-    this.bookings.push(booking);
-    localStorage.setItem(this.cacheKey, JSON.stringify(this.bookings));
-    return of(booking);
+
+    const endpoint = `${environment.apiBaseUrl}/trips/${payload.tripId}/bookings`;
+
+    return this.http.post<BackendTripBookingResponse>(endpoint, requestBody).pipe(
+      map((response) => ({
+        ...payload,
+        id: response.bookingId,
+        bookingId: response.bookingId,
+        reference: response.referenceCode,
+        referenceCode: response.referenceCode,
+        status: response.status as TripBookingStatus,
+        message: response.message,
+        submittedAt: new Date().toISOString()
+      }))
+    );
   }
 }

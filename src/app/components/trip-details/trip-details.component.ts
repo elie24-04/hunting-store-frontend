@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Trip } from 'src/app/core/models/trip.model';
 import { TripService } from 'src/app/services/trip.service';
-import { TripBookingService, TripBookingRequest } from 'src/app/services/trip-booking.service';
+import { TripBookingService, TripBookingRequest, TripBookingResponse } from 'src/app/services/trip-booking.service';
 
 @Component({
   selector: 'app-trip-details',
@@ -14,7 +14,7 @@ export class TripDetailsComponent implements OnInit {
   trip?: Trip;
   isLoading = true;
   bookingForm: FormGroup;
-  successBooking?: TripBookingRequest;
+  successBooking?: TripBookingResponse;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,6 +64,8 @@ export class TripDetailsComponent implements OnInit {
 
     const payload = {
       tripId: this.trip.id,
+      tripTitle: this.trip.title,
+      tripLocation: this.trip.location,
       fullName: this.bookingForm.value.fullName,
       email: this.bookingForm.value.email,
       phone: this.bookingForm.value.phone,
@@ -73,7 +75,8 @@ export class TripDetailsComponent implements OnInit {
       experience: this.bookingForm.value.experience,
       notes: this.bookingForm.value.notes,
       agreed: this.bookingForm.value.agreed,
-    };
+      status: 'NEW',
+    } as TripBookingRequest;
 
     this.tripBookingService.requestBooking(payload).subscribe((booking) => {
       this.successBooking = booking;
